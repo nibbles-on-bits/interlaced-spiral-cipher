@@ -23,29 +23,22 @@ func main() {
 	fmt.Println()
 	fmt.Println('Encode("ABCDEFGHIJKLMNOP") => %v\n', Encode("ABCDEFGHIJKLMNOP"))*/
 
-	fmt.Printf("GetEncodingPattern(3) => %v\n", GetEncodingPattern(3))
-	fmt.Println()
-	fmt.Printf("GetEncodingPattern(4) => %v\n", GetEncodingPattern(4))
+	//fmt.Printf("GetEncodingPattern(3) => %v\n", GetEncodingPattern(3))
+	//fmt.Println()
+	/*fmt.Printf("GetEncodingPattern(4) => %v\n", GetEncodingPattern(4))
 	fmt.Println()
 	fmt.Printf("GetEncodingPattern(5) => %v\n", GetEncodingPattern(5))
 	fmt.Println()
 	fmt.Printf("GetEncodingPattern(6) => %v\n", GetEncodingPattern(6))
 	fmt.Println()
 	fmt.Printf("GetEncodingPattern(7) => %v\n", GetEncodingPattern(7))
-	fmt.Println()
+	fmt.Println()*/
+
+	for i := 2; i < 10; i++ {
+		PrintEncodingPattern(GetEncodingPattern(i))
+	}
 
 }
-
-// LoopsNeeded will determine how many loops are necessary to encode a nxn size string
-// using Interlaced Spiral Cipher
-//func RingsNeeded(n int) int {
-//	return int((n + 1) / 2)
-//}
-
-/*func DimensionNeeded(n int) int {
-	return RingsNeeded(n) + 2
-
-}*/
 
 func Encode(encodeMe string) [][]int {
 	ret := [][]int{}
@@ -53,10 +46,16 @@ func Encode(encodeMe string) [][]int {
 	return ret
 }
 
-// GetEncodingPattern will generate an encoding sequence 2D array of
-// dimension x dimension size
-// GetEncodingPattern will generate an encoding sequence 2D array of
-// dimension x dimension size
+func PrintEncodingPattern(pattern [][]int) {
+	fmt.Println("Pattern Length : %d", len(pattern))
+	for x := 0; x < len(pattern); x++ {
+		for y := 0; y < len(pattern); y++ {
+			fmt.Printf("%3d ", pattern[x][y])
+		}
+		fmt.Println()
+	}
+}
+
 func GetEncodingPattern(dimension int) [][]int {
 
 	fmt.Printf("GetEncodingPattern   dimension=%d\n", dimension)
@@ -66,12 +65,7 @@ func GetEncodingPattern(dimension int) [][]int {
 		ret[i] = make([]int, dimension)
 	}
 
-	//ringsNeeded := RingsNeeded(dimension)
 	ringsNeeded := (dimension + 1) / 2
-	lastCnt := dimension*dimension - 1
-	fmt.Printf("GetEncodingPattern   ringsNeeded=%d\n", ringsNeeded)
-	fmt.Printf("GetEncodingPattern   lastCnt=%d\n", lastCnt)
-
 	cnt := 0
 
 	for ring := 0; ring < ringsNeeded; ring++ { // iterate thru rings 0 is outermost ring
@@ -101,7 +95,8 @@ func GetEncodingPattern(dimension int) [][]int {
 
 			if cnt == dimension*dimension-2 { // we are done ex : 5x5 would finish here
 				cnt++
-				ret[bottom-top][right-left] = cnt
+
+				ret[(dimension+1)/2-1][(dimension+1)/2-1] = cnt
 				// place this in the center!
 				return ret
 			}
