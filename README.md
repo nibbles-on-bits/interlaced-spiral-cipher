@@ -24,6 +24,8 @@ https://www.codewars.com/kata/interlaced-spiral-cipher/train/go
 - [x] Step 1
 - [x] Step 2
 - [x] Step 3
-- [ ] Step 4
-- [ ] Step 4
-- [ ] Step 4
+- [ ] Write Unit Tests
+- [ ] Complete Decode Cypher
+- [ ] Refactor
+- [ ] Test at Codewars.com
+- [ ] Create UI 

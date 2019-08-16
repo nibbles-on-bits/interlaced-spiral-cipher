@@ -40,20 +40,21 @@ func main() {
 	}*/
 
 	fmt.Printf(`Encode("Romani ite domum") = %s`+"\n", Encode("Romani ite domum"))
+	fmt.Printf(`Decode("Rntodomiimuea  m") = %s`+"\n", Decode("Rntodomiimuea  m"))
 
 	// Failing on this
 	fmt.Printf(`Encode("Sic transit gloria mundi ") = %s`+"\n", Encode("Sic transit gloria mundi "))
+	fmt.Printf(`Decode("Stsgiriuar i ninmd l otac") = %s`+"\n", Decode("Stsgiriuar i ninmd l otac"))
 
 }
 
-func Encode(encodeMe string) string {
+// Encode assumes s is a length of square
+func Encode(s string) string {
 
 	//TODO : test that string length is a square
-
-	dimension := int(math.Sqrt(float64((len(encodeMe)))))
+	dimension := int(math.Sqrt(float64((len(s)))))
 
 	ret := [][]byte{}
-
 	ret = make([][]byte, dimension)
 	for i := 0; i < dimension; i++ {
 		ret[i] = make([]byte, dimension)
@@ -70,16 +71,16 @@ func Encode(encodeMe string) string {
 
 		for x := 0; x < (right - ring); x++ {
 
-			ret[top][left+x] = encodeMe[cnt]
+			ret[top][left+x] = s[cnt]
 
 			cnt++
-			ret[top+x][right] = encodeMe[cnt]
+			ret[top+x][right] = s[cnt]
 
 			cnt++
-			ret[bottom][right-x] = encodeMe[cnt]
+			ret[bottom][right-x] = s[cnt]
 
 			cnt++
-			ret[bottom-x][left] = encodeMe[cnt]
+			ret[bottom-x][left] = s[cnt]
 
 			if cnt == dimension*dimension-1 { // we are done ex : 4x4 would finish here
 				//return ret
@@ -88,7 +89,7 @@ func Encode(encodeMe string) string {
 			if cnt == dimension*dimension-2 { // we are done ex : 5x5 would finish here
 				cnt++
 
-				ret[(dimension+1)/2-1][(dimension+1)/2-1] = encodeMe[cnt]
+				ret[(dimension+1)/2-1][(dimension+1)/2-1] = s[cnt]
 				// place this in the center!
 				//return ret
 			}
@@ -106,23 +107,27 @@ func Encode(encodeMe string) string {
 	return encodedString
 }
 
-func Decode(decodeMe string) string {
+// Decode assumes s is a length of square
+func Decode(s string) string {
+	ret := ""
 
 	//TODO : test that string length is a square
 
-	dimension := int(math.Sqrt(float64((len(decodeMe)))))
+	dimension := int(math.Sqrt(float64((len(s)))))
 
+	// grid is where we want to store
+	grid := [][]byte{}
+	grid = make([][]byte, dimension)
+	for i := 0; i < dimension; i++ {
+		grid[i] = make([]byte, dimension)
+	}
+
+	idx := 0
 	for x := 0; x < dimension; x++ {
 		for y := 0; y < dimension; y++ {
-
+			grid[x][y] = s[idx]
+			idx++
 		}
-	}
-
-	ret := [][]byte{}
-
-	ret = make([][]byte, dimension)
-	for i := 0; i < dimension; i++ {
-		ret[i] = make([]byte, dimension)
 	}
 
 	ringsNeeded := (dimension + 1) / 2
@@ -136,40 +141,27 @@ func Decode(decodeMe string) string {
 
 		for x := 0; x < (right - ring); x++ {
 
-			ret[top][left+x] = decodeMe[cnt]
+			ret += string(grid[top][left+x])
 
 			cnt++
-			ret[top+x][right] = decodeMe[cnt]
+			ret += string(grid[top+x][right])
 
 			cnt++
-			ret[bottom][right-x] = decodeMe[cnt]
+			ret += string(grid[bottom][right-x])
 
 			cnt++
-			ret[bottom-x][left] = decodeMe[cnt]
-
-			if cnt == dimension*dimension-1 { // we are done ex : 4x4 would finish here
-				//return ret
-			}
+			ret += string(grid[bottom-x][left])
 
 			if cnt == dimension*dimension-2 { // we are done ex : 5x5 would finish here
 				cnt++
-
-				ret[(dimension+1)/2-1][(dimension+1)/2-1] = decodeMe[cnt]
-				// place this in the center!
-				//return ret
+				ret += string(grid[(dimension+1)/2-1][(dimension+1)/2-1])
 			}
 			cnt++
 		}
 	}
 
-	encodedString := ""
-	for i := 0; i < dimension; i++ {
-		for j := 0; j < dimension; j++ {
-			encodedString = encodedString + string(ret[i][j])
-		}
-	}
+	return ret
 
-	return encodedString
 }
 
 func PrintEncodingPattern(pattern [][]int) {
