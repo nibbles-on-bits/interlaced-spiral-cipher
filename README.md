@@ -19,3 +19,4 @@ So, if we were to encrypt the string “ABCDEFGHIJKLMNOP” and we place it in t
 After the grid is populated with the string to be encrypted, we just concatenate each row starting from the top. This would yield the encrypted string: AEIBLMNFHPOJDKGC
 
 https://github.com/mevise-techblog/interlaced-spiral-cipher
+https://www.codewars.com/kata/interlaced-spiral-cipher/train/go
