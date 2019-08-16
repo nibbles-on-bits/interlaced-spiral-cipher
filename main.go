@@ -34,16 +34,84 @@ func main() {
 	fmt.Printf("GetEncodingPattern(7) => %v\n", GetEncodingPattern(7))
 	fmt.Println()*/
 
-	for i := 2; i < 10; i++ {
+	/*for i := 2; i < 10; i++ {
 		PrintEncodingPattern(GetEncodingPattern(i))
-	}
+	}*/
+
+	fmt.Printf(`Encode("ABCDEFGHIJKLMNOP", 4) = %s`+"\n", Encode("ABCDEFGHIJKLMNOP", 4))
+	fmt.Printf(`Encode("ABCDEFGHIJKLMNOPQRSTUVWYX", 5) = %s`+"\n", Encode("ABCDEFGHIJKLMNOPQRSTUVWYX", 5))
 
 }
 
-func Encode(encodeMe string) [][]int {
-	ret := [][]int{}
+func Encode(encodeMe string, dimension int) string {
 
-	return ret
+	// TODO : get rid of dimension parameter, we should be able to calculate that here
+
+	//fmt.Println("Encode() called, encodeMe=", encodeMe)
+	//fmt.Printf("length = %d\n", len(encodeMe))
+
+	ret := [][]byte{}
+
+	//fmt.Printf("GetEncodingPattern   dimension=%d\n", dimension)
+
+	ret = make([][]byte, dimension)
+	for i := 0; i < dimension; i++ {
+		ret[i] = make([]byte, dimension)
+	}
+
+	ringsNeeded := (dimension + 1) / 2
+	cnt := 0
+
+	//done := false
+
+	for ring := 0; ring < ringsNeeded; ring++ { // iterate thru rings 0 is outermost ring
+		top := ring
+		left := ring
+		right := dimension - 1 - ring
+		bottom := dimension - 1 - ring
+		//fmt.Printf("ring=%d top=%d left=%d bottom=%d right=%d\n", ring, top, left, bottom, right)
+
+		for x := 0; x < (right - ring); x++ {
+
+			ret[top][left+x] = encodeMe[cnt]
+
+			cnt++
+			ret[top+x][right] = encodeMe[cnt]
+
+			cnt++
+			ret[bottom][right-x] = encodeMe[cnt]
+
+			cnt++
+			ret[bottom-x][left] = encodeMe[cnt]
+
+			if cnt == dimension*dimension-1 { // we are done ex : 4x4 would finish here
+				//return ret
+			}
+
+			if cnt == dimension*dimension-2 { // we are done ex : 5x5 would finish here
+				cnt++
+
+				ret[(dimension+1)/2-1][(dimension+1)/2-1] = encodeMe[cnt]
+				// place this in the center!
+				//return ret
+			}
+			cnt++
+		}
+	}
+
+	// Here we shoule have the string in the encoding pattern
+	//fmt.Println("SHOULD HAVE STRING ENCODED")
+
+	// go thru the array to build the encoded string and return it here
+
+	encodedString := ""
+	for i := 0; i < dimension; i++ {
+		for j := 0; j < dimension; j++ {
+			encodedString = encodedString + string(ret[i][j])
+		}
+	}
+
+	return encodedString
 }
 
 func PrintEncodingPattern(pattern [][]int) {
