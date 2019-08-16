@@ -38,21 +38,16 @@ func main() {
 		PrintEncodingPattern(GetEncodingPattern(i))
 	}*/
 
-	fmt.Printf(`Encode("ABCDEFGHIJKLMNOP", 4) = %s`+"\n", Encode("ABCDEFGHIJKLMNOP", 4))
-	fmt.Printf(`Encode("ABCDEFGHIJKLMNOPQRSTUVWYX", 5) = %s`+"\n", Encode("ABCDEFGHIJKLMNOPQRSTUVWYX", 5))
+	fmt.Printf(`Encode("Romani ite domum", 4) = %s`+"\n", Encode("Romani ite domum", 4))
+
+	// Failing on this
+	fmt.Printf(`Encode("Stsgiriuar i ninmd l otac", 5) = %s`+"\n", Encode("Stsgiriuar i ninmd l otac", 5))
 
 }
 
 func Encode(encodeMe string, dimension int) string {
 
-	// TODO : get rid of dimension parameter, we should be able to calculate that here
-
-	//fmt.Println("Encode() called, encodeMe=", encodeMe)
-	//fmt.Printf("length = %d\n", len(encodeMe))
-
 	ret := [][]byte{}
-
-	//fmt.Printf("GetEncodingPattern   dimension=%d\n", dimension)
 
 	ret = make([][]byte, dimension)
 	for i := 0; i < dimension; i++ {
@@ -62,14 +57,11 @@ func Encode(encodeMe string, dimension int) string {
 	ringsNeeded := (dimension + 1) / 2
 	cnt := 0
 
-	//done := false
-
 	for ring := 0; ring < ringsNeeded; ring++ { // iterate thru rings 0 is outermost ring
 		top := ring
 		left := ring
 		right := dimension - 1 - ring
 		bottom := dimension - 1 - ring
-		//fmt.Printf("ring=%d top=%d left=%d bottom=%d right=%d\n", ring, top, left, bottom, right)
 
 		for x := 0; x < (right - ring); x++ {
 
@@ -99,10 +91,69 @@ func Encode(encodeMe string, dimension int) string {
 		}
 	}
 
-	// Here we shoule have the string in the encoding pattern
-	//fmt.Println("SHOULD HAVE STRING ENCODED")
+	encodedString := ""
+	for i := 0; i < dimension; i++ {
+		for j := 0; j < dimension; j++ {
+			encodedString = encodedString + string(ret[i][j])
+		}
+	}
 
-	// go thru the array to build the encoded string and return it here
+	return encodedString
+}
+
+
+func Decode(decodeMe string, dimension int) string {
+
+	for x := 0; len(dimension); x++) {
+		for y := 0; len(dimension); x++) {
+		}
+	}
+
+
+
+	ret := [][]byte{}
+
+	ret = make([][]byte, dimension)
+	for i := 0; i < dimension; i++ {
+		ret[i] = make([]byte, dimension)
+	}
+
+	ringsNeeded := (dimension + 1) / 2
+	cnt := 0
+
+	for ring := 0; ring < ringsNeeded; ring++ { // iterate thru rings 0 is outermost ring
+		top := ring
+		left := ring
+		right := dimension - 1 - ring
+		bottom := dimension - 1 - ring
+
+		for x := 0; x < (right - ring); x++ {
+
+			ret[top][left+x] = decodeMe[cnt]
+
+			cnt++
+			ret[top+x][right] = decodeMe[cnt]
+
+			cnt++
+			ret[bottom][right-x] = decodeMe[cnt]
+
+			cnt++
+			ret[bottom-x][left] = decodeMe[cnt]
+
+			if cnt == dimension*dimension-1 { // we are done ex : 4x4 would finish here
+				//return ret
+			}
+
+			if cnt == dimension*dimension-2 { // we are done ex : 5x5 would finish here
+				cnt++
+
+				ret[(dimension+1)/2-1][(dimension+1)/2-1] = decodeMe[cnt]
+				// place this in the center!
+				//return ret
+			}
+			cnt++
+		}
+	}
 
 	encodedString := ""
 	for i := 0; i < dimension; i++ {
