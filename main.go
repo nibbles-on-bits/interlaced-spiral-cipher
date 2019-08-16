@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func main() {
@@ -38,14 +39,18 @@ func main() {
 		PrintEncodingPattern(GetEncodingPattern(i))
 	}*/
 
-	fmt.Printf(`Encode("Romani ite domum", 4) = %s`+"\n", Encode("Romani ite domum", 4))
+	fmt.Printf(`Encode("Romani ite domum") = %s`+"\n", Encode("Romani ite domum"))
 
 	// Failing on this
-	fmt.Printf(`Encode("Stsgiriuar i ninmd l otac", 5) = %s`+"\n", Encode("Stsgiriuar i ninmd l otac", 5))
+	fmt.Printf(`Encode("Sic transit gloria mundi ") = %s`+"\n", Encode("Sic transit gloria mundi "))
 
 }
 
-func Encode(encodeMe string, dimension int) string {
+func Encode(encodeMe string) string {
+
+	//TODO : test that string length is a square
+
+	dimension := int(math.Sqrt(float64((len(encodeMe)))))
 
 	ret := [][]byte{}
 
@@ -101,15 +106,17 @@ func Encode(encodeMe string, dimension int) string {
 	return encodedString
 }
 
+func Decode(decodeMe string) string {
 
-func Decode(decodeMe string, dimension int) string {
+	//TODO : test that string length is a square
 
-	for x := 0; len(dimension); x++) {
-		for y := 0; len(dimension); x++) {
+	dimension := int(math.Sqrt(float64((len(decodeMe)))))
+
+	for x := 0; x < dimension; x++ {
+		for y := 0; y < dimension; y++ {
+
 		}
 	}
-
-
 
 	ret := [][]byte{}
 
